@@ -42,8 +42,14 @@ function displayContacts() {
     $contents = fread($handle, filesize($filename));
     $contents = trim($contents);
     fclose($handle);
-    echo $contents . PHP_EOL;
-
+    //echo $contents . PHP_EOL;
+    $contactsArray = explode("\n", $contents);
+    foreach($contactsArray as $key => $contact) {
+        $tempArray = explode("|", $contact);
+        $result = array("name"  =>   $tempArray[0],
+            "number" =>  $tempArray[1]);
+        echo $tempArray[0] . " | " . formatNumber($tempArray[1]) . PHP_EOL;
+    }
     prompt();
 }
 
@@ -89,7 +95,7 @@ function deleteContact() {
             unset($contactsArray[$key]);
             fclose($handle);
             $writeHandle = fopen($filename, "w");
-            $rewrite = implode("\n", $contactsArray);
+            $rewrite = implode("\n", $contactsArray) . PHP_EOL;
             fwrite($writeHandle, $rewrite);
             fclose($writeHandle);
         }
@@ -118,11 +124,22 @@ function searchContact() {
 
         if(stristr($tempArray[0], $searchVal)!== false){
             echo "=====found=====" . PHP_EOL;
-            echo $tempArray[0] . " " . $tempArray[1] . PHP_EOL . PHP_EOL;
+            echo $tempArray[0] . " | " . formatNumber($tempArray[1]) . PHP_EOL . PHP_EOL;
         }
     }
     fclose($handle);
     prompt();
+}
+
+
+function formatNumber($number) {
+    $num1 = substr($number, 0, 3); 
+    $num2 = substr($number, 3, 3); 
+    $num3 = substr($number, 6, 4);
+    $newNumber = $num1 . "-" . $num2 . "-" . $num3;
+
+    return $newNumber;
+ 
 }
 
 // Call startup() on program launch
