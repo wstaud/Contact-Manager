@@ -44,6 +44,8 @@ function displayContacts() {
     fclose($handle);
     //echo $contents . PHP_EOL;
     $contactsArray = explode("\n", $contents);
+
+    echo "Name        | Phone Number" . PHP_EOL;
     foreach($contactsArray as $key => $contact) {
         $tempArray = explode("|", $contact);
         $result = array("name"  =>   $tempArray[0],
