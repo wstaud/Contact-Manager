@@ -76,22 +76,21 @@ function searchContact() {
     // Turns txt file into array
     $contactsArray = explode("\n", $contents);
 
+    fwrite(STDOUT, "Search for contact:" . PHP_EOL);
+    $searchVal = trim(fgets(STDIN));
+
     foreach($contactsArray as $contact) {
         $tempArray = explode("|", $contact);
         $result = array("name"  =>   $tempArray[0],
             "number" =>  $tempArray[1]);
-        print_r($result);
+
+        if(strpos($tempArray[0], $searchVal)!== false){
+            echo 'found' . PHP_EOL;
+            echo $tempArray[0] . " " . $tempArray[1] . PHP_EOL;
+        }
     }
-    
-
-    fwrite(STDOUT, "Search for contact:" . PHP_EOL);
-    $searchVal = trim(fgets(STDIN));
-
-    $result = array_search($searchVal, $contactsArray);
-
-    var_dump($result);
-
-
+    //var_dump($result);
+    prompt();
 }
 
 startup();
