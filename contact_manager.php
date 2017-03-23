@@ -83,8 +83,9 @@ function deleteContact() {
     $contents = trim($contents); 
     // Turns txt file into array
     $contactsArray = explode("\n", $contents);
+    $contactExist = false;
     
-    fwrite(STDOUT, "Input full name or number of contact to delete (needs to be exact)" .  PHP_EOL);
+    fwrite(STDOUT, "Input full name of contact (Exact full name to ensure correct contact is deleted)" .  PHP_EOL);
     $delVal = trim(fgets(STDIN));
 
     foreach($contactsArray as $key => $contact) {
@@ -100,8 +101,13 @@ function deleteContact() {
             $rewrite = implode("\n", $contactsArray) . PHP_EOL;
             fwrite($writeHandle, $rewrite);
             fclose($writeHandle);
+            $contactExist = true;
         }
       
+    }
+    //Echos error if no contact was found
+    if($contactExist === false) {
+        echo "Error: No contact exists by that full name!" . PHP_EOL;
     }
     prompt();
 }
